@@ -36,8 +36,6 @@ func PageHtml(mcontents string, host string, titles []string) string {
 		
 		
 	}
-	
-	
 
 	var htmlcont = `<!DOCTYPE html>
 <html>
