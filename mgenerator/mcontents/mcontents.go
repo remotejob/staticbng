@@ -64,12 +64,12 @@ func (c *Chain) Generate(n int, keyword string) string {
 	return strings.Join(words, " ")
 }
 
-func Generate(contents []string) string {
+func Generate(numWords int,contents []string) string {
 
 	rand.Seed(time.Now().UnixNano())
 	var buffer bytes.Buffer
 	prefixLen := 1
-	numWords := 1000
+//	numWords := 1000
 	c := NewChain(prefixLen)
 	
 	for _, phrase := range contents {
@@ -78,7 +78,7 @@ func Generate(contents []string) string {
 				
 	}	
 	c.Write(buffer.Bytes())
-	text := c.Generate(numWords, "job")
+	text := c.Generate(numWords, "In")
 	
 	return text
 }

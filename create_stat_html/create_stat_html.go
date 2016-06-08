@@ -11,20 +11,63 @@ func check(e error) {
 	}
 }
 
-var htmlcont = `<!DOCTYPE html>
+//var htmlcont = `<!DOCTYPE html>
+//<html>
+//<body>
+//
+//<h1>My First Heading</h1>
+//
+//<p>My first paragraph.</p>
+//
+//</body>
+//</html>`
+
+func PageHtml(mcontents string, host string, titles []string) string {
+
+	var title0 string =host
+	var title1 string = host
+	var title2 string =host
+	
+	for i,tlt := range titles {
+		
+		if i == 0 {
+			
+			title0 = tlt			
+			
+		} else if i == 1 {
+			
+			title1 = tlt
+						
+		} else if i == 2 {
+			
+			title2 = tlt			
+		}
+		
+		
+	}
+	
+	
+
+	var htmlcont = `<!DOCTYPE html>
 <html>
 <body>
 
-<h1>My First Heading</h1>
+<h1>`+title0+`</h1>
+<h2>`+title1+`</h2>
 
-<p>My first paragraph.</p>
+<p>`+title2+`</p>	` + mcontents + `
 
 </body>
 </html>`
+	return htmlcont
+}
 
-func Create(file string) {
+func Create(file string, mcontents string, host string, titles []string) {
 
 	if _, err := os.Stat(file); os.IsNotExist(err) {
+
+		htmlcont := PageHtml(mcontents,host,titles)
+
 		d1 := []byte(htmlcont)
 		err := ioutil.WriteFile(file, d1, 0644)
 		check(err)
@@ -33,7 +76,9 @@ func Create(file string) {
 
 }
 
-func CreateIndex(dir string) {
+func CreateIndex(dir string, mcontents string, host string, titles []string) {
+
+	htmlcont := PageHtml(mcontents,host,titles)
 
 	file := dir + "/index.html"
 	if _, err := os.Stat(file); os.IsNotExist(err) {
