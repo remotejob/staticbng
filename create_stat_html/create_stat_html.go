@@ -3,6 +3,7 @@ package create_stat_html
 import (
 	"io/ioutil"
 	"os"
+	"github.com/remotejob/comutils/str"
 )
 
 func check(e error) {
@@ -11,16 +12,6 @@ func check(e error) {
 	}
 }
 
-//var htmlcont = `<!DOCTYPE html>
-//<html>
-//<body>
-//
-//<h1>My First Heading</h1>
-//
-//<p>My first paragraph.</p>
-//
-//</body>
-//</html>`
 
 func PageHtml(mcontents string, host string, titles []string) string {
 
@@ -32,15 +23,15 @@ func PageHtml(mcontents string, host string, titles []string) string {
 		
 		if i == 0 {
 			
-			title0 = tlt			
+			title0 = str.UpcaseInitial(tlt)			
 			
 		} else if i == 1 {
 			
-			title1 = tlt
+			title1 = str.UpcaseInitial(tlt)
 						
 		} else if i == 2 {
 			
-			title2 = tlt			
+			title2 = str.UpcaseInitial(tlt)			
 		}
 		
 		
@@ -50,6 +41,9 @@ func PageHtml(mcontents string, host string, titles []string) string {
 
 	var htmlcont = `<!DOCTYPE html>
 <html>
+<head>
+<title>`+title2+`</title>
+</head>
 <body>
 
 <h1>`+title0+`</h1>
