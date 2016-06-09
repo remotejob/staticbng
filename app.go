@@ -32,6 +32,7 @@ func main() {
 	}
 
 	var sitemapdir string
+	var webrootdir string
 	var cfg domains.ServerConfig
 	if err := gcfg.ReadFileInto(&cfg, "config.gcfg"); err != nil {
 		log.Fatalln(err.Error())
@@ -39,6 +40,7 @@ func main() {
 	} else {
 
 		sitemapdir = cfg.Dirs.Sitemapdir
+		webrootdir = cfg.Dirs.Webrootdir		
 
 	}
 
@@ -64,7 +66,6 @@ func main() {
 	for _, sitemap_file := range fileList {
 		fmt.Println(sitemap_file)
 
-		rootdir := "/tmp/"
 		sitemapObjs, err := parsesitemap.Parse(sitemap_file)
 
 		var mtext string
@@ -79,16 +80,16 @@ func main() {
 
 				if dir_or_file.CheckifFile(linkpath) {
 
-					fls.CreateDirForFile(rootdir, linkpath)
+					fls.CreateDirForFile(webrootdir, linkpath)
 					wordNum = gen.Random(1000, 2000)
 					mtext = mcontents.Generate(wordNum, allrecords)
-					create_stat_html.Create(rootdir+linkpath, mtext, host, titles)
+					create_stat_html.Create(webrootdir+linkpath, mtext, host, titles)
 
 				} else {
-					fls.CreateDirForDir(rootdir, linkpath)
+					fls.CreateDirForDir(webrootdir, linkpath)
 					wordNum = gen.Random(1000, 2000)
 					mtext = mcontents.Generate(wordNum, allrecords)
-					create_stat_html.CreateIndex(rootdir+linkpath, mtext, host, titles)
+					create_stat_html.CreateIndex(webrootdir+linkpath, mtext, host, titles)
 
 				}
 

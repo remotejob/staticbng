@@ -1,16 +1,10 @@
 package domains
 
-import (
-
-)
-
+import ()
 
 type ServerConfig struct {
-
 	Dirs struct {
-		Sitemapdir        string
-
+		Sitemapdir string
+		Webrootdir string
 	}
 }
-
-

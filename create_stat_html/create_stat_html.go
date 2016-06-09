@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"github.com/remotejob/comutils/str"
+	"fmt"
 )
 
 func check(e error) {
@@ -73,6 +74,9 @@ func CreateIndex(dir string, mcontents string, host string, titles []string) {
 	htmlcont := PageHtml(mcontents,host,titles)
 
 	file := dir + "/index.html"
+	
+	fmt.Println(file)
+	
 	if _, err := os.Stat(file); os.IsNotExist(err) {
 		d1 := []byte(htmlcont)
 		err := ioutil.WriteFile(file, d1, 0644)
