@@ -1,7 +1,7 @@
 package main
 
 import (
-	//	"fmt"
+//		"fmt"
 	"github.com/remotejob/comutils/gen"
 	"github.com/remotejob/staticbng/check_structure/scaner"
 	"github.com/remotejob/staticbng/create_stat_html"
@@ -65,7 +65,8 @@ func main() {
 	}
 
 	for _, dir_to_check := range dirs_to_check {
-
+		
+//		fmt.Print("dir_to_check",dir_to_check)
 		noIndexListDirs := scaner.Scan(dir_to_check)
 
 		for _, noIndexListDir := range noIndexListDirs {

@@ -26,10 +26,5 @@ func Scan(searchDir string) []string{
 		panic(err)
 	}
 
-//	for _, noIndexListDir := range noIndexListDirs {
-//
-//		fmt.Println(noIndexListDir)
-//
-//	}
   return noIndexListDirs
 }
