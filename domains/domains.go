@@ -8,3 +8,10 @@ type ServerConfig struct {
 		Webrootdir string
 	}
 }
+
+
+type TeplatePage struct {
+	Mcontents string
+	Host      string
+	Titles    []string
+}
