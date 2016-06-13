@@ -6,7 +6,7 @@ import (
 
 func TestScan(t *testing.T) {
 	
-	Scan("/tmp/127.0.0.1")
+//	Scan("/tmp/127.0.0.1")
 
 }
 

@@ -1,11 +1,13 @@
 package create_stat_html
 
 import (
-//	"fmt"
+	//	"fmt"
+	"github.com/remotejob/comutils/gen"
 	"github.com/remotejob/comutils/str"
 	"github.com/remotejob/staticbng/domains"
+//	"github.com/remotejob/staticbng/mgenerator/dbgetall"
+	"github.com/remotejob/staticbng/mgenerator/mcontents"
 	"html/template"
-//	"io/ioutil"
 	"os"
 	"path"
 )
@@ -16,81 +18,13 @@ func check(e error) {
 	}
 }
 
-func PageHtml(mcontents string, host string, titles []string) string {
-
-	var title0 string = host
-	var title1 string = host
-	var title2 string = host
-
-	for i, tlt := range titles {
-
-		if i == 0 {
-
-			title0 = str.UpcaseInitial(tlt)
-
-		} else if i == 1 {
-
-			title1 = str.UpcaseInitial(tlt)
-
-		} else if i == 2 {
-
-			title2 = str.UpcaseInitial(tlt)
-		}
-
-	}
-
-	var htmlcont = `<!DOCTYPE html>
-<html>
-<head>
-<title>` + title2 + `</title>
-</head>
-<body>
-
-<h1>` + title0 + `</h1>
-<h2>` + title1 + `</h2>
-
-<p>` + title2 + `</p>	` + mcontents + `
-
-</body>
-</html>`
-	return htmlcont
-}
-
-func Create(file string, mcontents string, host string, titles []string) {
+func Create(file string, allrecords []string, host string, titles []string, internallinks []domains.LinkObj) {
 
 	if _, err := os.Stat(file); os.IsNotExist(err) {
 
-		var title0 string = host
-		var title1 string = host
-		var title2 string = host
-		
-		var mod_title []string
-
-		for i, tlt := range titles {
-
-			if i == 0 {
-
-				title0 = str.UpcaseInitial(tlt)
-				mod_title = append(mod_title,title0 )				
-
-			} else if i == 1 {
-
-				title1 = str.UpcaseInitial(tlt)
-				mod_title = append(mod_title,title1)				
-
-			} else if i == 2 {
-
-				title2 = str.UpcaseInitial(tlt)
-				mod_title = append(mod_title,title2)				
-			}
-
-		}
-
-		//			htmlcont := PageHtml(mcontents,host,titles)
-		//
-		//			d1 := []byte(htmlcont)
-		//			err := ioutil.WriteFile(file, d1, 0644)
-		//			check(err)
+		mod_title := mod_titles(host, titles)
+		wordNum := gen.Random(1000, 2000)
+		mtext := mcontents.Generate(wordNum, allrecords)
 
 		f, err := os.Create(file)
 		if err != nil {
@@ -99,7 +33,7 @@ func Create(file string, mcontents string, host string, titles []string) {
 			return
 		}
 
-		pageObj := domains.TeplatePage{Mcontents: mcontents, Host: host, Titles: mod_title}
+		pageObj := domains.TeplatePage{Mcontents: mtext, Host: host, Titles: mod_title, Internallinks: internallinks}
 
 		lp := path.Join("templates", "layout.html")
 
@@ -113,49 +47,25 @@ func Create(file string, mcontents string, host string, titles []string) {
 
 }
 
-func CreateIndex(dir string, mcontents string, host string, titles []string) {
-
-//	htmlcont := PageHtml(mcontents, host, titles)
-		var title0 string = host
-		var title1 string = host
-		var title2 string = host
-		
-		var mod_title []string
-
-		for i, tlt := range titles {
-
-			if i == 0 {
-
-				title0 = str.UpcaseInitial(tlt)
-				mod_title = append(mod_title,title0 )				
-
-			} else if i == 1 {
-
-				title1 = str.UpcaseInitial(tlt)
-				mod_title = append(mod_title,title1)				
-
-			} else if i == 2 {
-
-				title2 = str.UpcaseInitial(tlt)
-				mod_title = append(mod_title,title2)				
-			}
-
-		}
-
+func CreateIndex(dir string, allrecords []string, host string, titles []string, internallinks []domains.LinkObj) {
 
 	file := dir + "/index.html"
 
-
 	if _, err := os.Stat(file); os.IsNotExist(err) {
-		
-				f, err := os.Create(file)
+
+		mod_title := mod_titles(host, titles)
+
+		wordNum := gen.Random(1000, 2000)
+		mtext := mcontents.Generate(wordNum, allrecords)
+
+		f, err := os.Create(file)
 		if err != nil {
 			//    log.Println("create file: ", err)
 			check(err)
 			return
 		}
 
-		pageObj := domains.TeplatePage{Mcontents: mcontents, Host: host, Titles: mod_title}
+		pageObj := domains.TeplatePage{Mcontents: mtext, Host: host, Titles: mod_title, Internallinks: internallinks}
 
 		lp := path.Join("templates", "layout.html")
 
@@ -164,9 +74,39 @@ func CreateIndex(dir string, mcontents string, host string, titles []string) {
 
 		err = t.Execute(f, pageObj)
 		check(err)
-		
-		
 
 	}
+
+}
+
+func mod_titles(host string, titles []string) []string {
+
+	var title0 string = host
+	var title1 string = host
+	var title2 string = host
+
+	var mod_title []string
+
+	for i, tlt := range titles {
+
+		if i == 0 {
+
+			title0 = str.UpcaseInitial(tlt)
+			mod_title = append(mod_title, title0)
+
+		} else if i == 1 {
+
+			title1 = str.UpcaseInitial(tlt)
+			mod_title = append(mod_title, title1)
+
+		} else if i == 2 {
+
+			title2 = str.UpcaseInitial(tlt)
+			mod_title = append(mod_title, title2)
+		}
+
+	}
+
+	return mod_title
 
 }

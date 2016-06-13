@@ -2,12 +2,12 @@ package main
 
 import (
 //		"fmt"
-	"github.com/remotejob/comutils/gen"
+//	"github.com/remotejob/comutils/gen"
 	"github.com/remotejob/staticbng/check_structure/scaner"
 	"github.com/remotejob/staticbng/create_stat_html"
 	"github.com/remotejob/staticbng/domains"
 	"github.com/remotejob/staticbng/mgenerator/dbgetall"
-	"github.com/remotejob/staticbng/mgenerator/mcontents"
+//	"github.com/remotejob/staticbng/mgenerator/mcontents"
 	"gopkg.in/gcfg.v1"
 	"gopkg.in/mgo.v2"
 	"log"
@@ -31,10 +31,10 @@ func main() {
 
 	}
 
-	searchDir := sitemapdir
+//	searchDir := sitemapdir
 
 	fileList := []string{}
-	err := filepath.Walk(searchDir, func(path string, f os.FileInfo, err error) error {
+	err := filepath.Walk(sitemapdir, func(path string, f os.FileInfo, err error) error {
 
 		if !f.IsDir() {
 			fileList = append(fileList, path)
@@ -65,16 +65,17 @@ func main() {
 	}
 
 	for _, dir_to_check := range dirs_to_check {
-		
-//		fmt.Print("dir_to_check",dir_to_check)
+
 		noIndexListDirs := scaner.Scan(dir_to_check)
+
+		var internallinks []domains.LinkObj
 
 		for _, noIndexListDir := range noIndexListDirs {
 
-			wordNum := gen.Random(1000, 2000)
-			mtext := mcontents.Generate(wordNum, allrecords)
+//			wordNum := gen.Random(1000, 2000)
+//			mtext := mcontents.Generate(wordNum, allrecords)
 			titles := []string{"index", "index", "index"}
-			create_stat_html.CreateIndex(noIndexListDir, mtext, site, titles)
+			create_stat_html.CreateIndex(noIndexListDir, allrecords, site, titles,internallinks)
 		}
 
 	}

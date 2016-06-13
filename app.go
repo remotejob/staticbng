@@ -4,14 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"github.com/remotejob/comutils/fls"
-	"github.com/remotejob/comutils/gen"
 	"github.com/remotejob/staticbng/create_stat_html"
 	"github.com/remotejob/staticbng/dir_or_file"
 	"github.com/remotejob/staticbng/domains"
 	"github.com/remotejob/staticbng/mgenerator/dbgetall"
-	"github.com/remotejob/staticbng/mgenerator/mcontents"
 	"github.com/remotejob/staticbng/parsesitemap"
 	"github.com/remotejob/staticbng/splitlink"
+	"github.com/remotejob/staticbng/internal_links"
 	"gopkg.in/gcfg.v1"
 	"gopkg.in/mgo.v2"
 	"log"
@@ -68,28 +67,23 @@ func main() {
 
 		sitemapObjs, err := parsesitemap.Parse(sitemap_file)
 
-		var mtext string
-		var wordNum int
-
 		if err != nil {
 			fmt.Println(err.Error())
 		} else {
 			for _, sitemapObj := range sitemapObjs {
 
 				host, linkpath, titles := splitlink.Split(sitemapObj.Loc)
-
+				
+				internallinks := internal_links.Create(sitemapObjs )				
+				
 				if dir_or_file.CheckifFile(linkpath) {
 
 					fls.CreateDirForFile(webrootdir, linkpath)
-					wordNum = gen.Random(1000, 2000)
-					mtext = mcontents.Generate(wordNum, allrecords)
-					create_stat_html.Create(webrootdir+linkpath, mtext, host, titles)
+					create_stat_html.Create(webrootdir+linkpath, allrecords, host, titles, internallinks)
 
 				} else {
 					fls.CreateDirForDir(webrootdir, linkpath)
-					wordNum = gen.Random(1000, 2000)
-					mtext = mcontents.Generate(wordNum, allrecords)
-					create_stat_html.CreateIndex(webrootdir+linkpath, mtext, host, titles)
+					create_stat_html.CreateIndex(webrootdir+linkpath, allrecords, host, titles,internallinks)
 
 				}
 
